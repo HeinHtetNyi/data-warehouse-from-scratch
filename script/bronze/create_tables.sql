@@ -47,3 +47,7 @@ CREATE TABLE bronze.erp_product_categories (
       subcat       NVARCHAR(50),
       maintenance  NVARCHAR(50)
 );
+
+SELECT table_name
+  FROM information_schema.tables
+  WHERE table_schema = 'bronze';
