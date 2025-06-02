@@ -10,6 +10,7 @@ CREATE TABLE silver.crm_customers (
 
 CREATE TABLE silver.crm_products (
       prd_id       INT,
+      cat_id       NVARCHAR(50),
       prd_key      NVARCHAR(50),
       prd_nm       NVARCHAR(50),
       prd_cost     INT,
