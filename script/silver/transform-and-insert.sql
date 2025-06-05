@@ -96,16 +96,58 @@ WITH crm_transformed_sale_details AS (
   FROM bronze.crm_sale_details
 )
 INSERT INTO silver.crm_sale_details (
-      sls_ord_num,
-			sls_prd_key,
-			sls_cust_id,
-			sls_order_dt,
-			sls_ship_dt,
-			sls_due_dt,
-			sls_sales,
-			sls_quantity,
-			sls_price
+      	sls_ord_num,
+	sls_prd_key,
+	sls_cust_id,
+	sls_order_dt,
+	sls_ship_dt,
+	sls_due_dt,
+	sls_sales,
+	sls_quantity,
+	sls_price
 )
 SELECT * FROM crm_transformed_sale_details;
 ------------------------------------------------------------
 
+WITH erp_transformed_customers AS (
+	SELECT
+		CASE
+		  WHEN cid LIKE 'NAS%' THEN SUBSTRING(cid, 4, LEN(cid))
+		  ELSE cid
+		END AS cid, 
+		CASE
+		  WHEN bdate > CURRENT_DATE THEN NULL
+		  ELSE bdate
+		END AS bdate,
+		CASE
+		  WHEN UPPER(TRIM(gen)) IN ('F', 'FEMALE') THEN 'Female'
+		  WHEN UPPER(TRIM(gen)) IN ('M', 'MALE') THEN 'Male'
+		  ELSE 'n/a'
+		END AS gen 
+	FROM bronze.erp_customers
+)
+INSERT INTO silver.erp_customers (
+	cid,
+	bdate,
+	gen
+)
+SELECT * FROM erp_transformed_customers;
+------------------------------------------------------------
+
+WITH erp_transformed_locations AS (
+	SELECT
+		REPLACE(cid, '-', '') AS cid, 
+		CASE
+			WHEN TRIM(cntry) = 'DE' THEN 'Germany'
+			WHEN TRIM(cntry) IN ('US', 'USA') THEN 'United States'
+			WHEN TRIM(cntry) = '' OR cntry IS NULL THEN 'n/a'
+			ELSE TRIM(cntry)
+		END AS cntry 
+	FROM bronze.erp_locations
+)
+INSERT INTO silver.erp_locations (
+	cid,
+	cntry
+)
+SELECT * FROM erp_transformed_locations;
+------------------------------------------------------------
