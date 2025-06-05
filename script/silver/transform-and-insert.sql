@@ -55,7 +55,7 @@ WITH crm_transformed_products AS (
   LEAD(prd_start_dt) OVER (PARTITION BY prd_key ORDER BY prd_start_dt)::DATE - 1 AS prd_end_dt
   FROM bronze.crm_products
 )
-INSERT INTO silver.crm_prd_info (
+INSERT INTO silver.crm_products (
   prd_id,
   cat_id,
   prd_key,
@@ -67,3 +67,45 @@ INSERT INTO silver.crm_prd_info (
 )
 SELECT * FROM crm_transformed_products;
 ------------------------------------------------------------
+
+WITH crm_transformed_sale_details AS (
+  SELECT
+     sls_ord_num,
+     sls_prd_key,
+     sls_cust_id,
+     CASE WHEN  sls_order_dt = 0 OR LEN(sls_order_dt::TEXT) != 8 THEN NULL
+     ELSE STRPTIME(sls_order_dt::TEXT, '%Y%m%d')::DATE
+     END AS sls_order_dt,
+     CASE WHEN  sls_ship_dt = 0 OR LEN(sls_ship_dt::TEXT) != 8 THEN NULL
+     ELSE STRPTIME(sls_ship_dt::TEXT, '%Y%m%d')::DATE
+     END AS sls_ship_dt,
+     CASE WHEN  sls_due_dt = 0 OR LEN(sls_due_dt::TEXT) != 8 THEN NULL
+     ELSE STRPTIME(sls_due_dt::TEXT, '%Y%m%d')::DATE
+     END AS sls_due_dt,
+     CASE 
+       WHEN sls_sales IS NULL OR sls_sales <= 0 OR sls_sales != sls_quantity * ABS(sls_price) 
+       THEN sls_quantity * ABS(sls_price)
+       ELSE sls_sales
+     END AS sls_sales,
+     sls_quantity,
+     CASE  
+       WHEN sls_price IS NULL OR sls_price <= 0 
+       THEN sls_sales / NULLIF(sls_quantity, 0)
+       ELSE sls_price
+     END AS sls_price,
+  FROM bronze.crm_sale_details
+)
+INSERT INTO silver.crm_sale_details (
+      sls_ord_num,
+			sls_prd_key,
+			sls_cust_id,
+			sls_order_dt,
+			sls_ship_dt,
+			sls_due_dt,
+			sls_sales,
+			sls_quantity,
+			sls_price
+)
+SELECT * FROM crm_transformed_sale_details;
+------------------------------------------------------------
+
