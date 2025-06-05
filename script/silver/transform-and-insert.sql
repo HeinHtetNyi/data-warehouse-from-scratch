@@ -1,5 +1,7 @@
 -- We got multiple customers with the same cst_id,
 -- So, we need to filter the oudated customers info
+
+DELETE FROM silver.crm_customers;
 WITH crm_transformed_customers AS (
   SELECT 
     cst_id, cst_key,
@@ -37,6 +39,7 @@ INSERT INTO silver.crm_customers (
 SELECT * FROM crm_transformed_customers;
 ------------------------------------------------------------
 
+DELETE FROM silver.crm_products;
 WITH crm_transformed_products AS (
   SELECT 
   prd_id,
@@ -68,6 +71,7 @@ INSERT INTO silver.crm_products (
 SELECT * FROM crm_transformed_products;
 ------------------------------------------------------------
 
+DELETE FROM silver.crm_sale_details;
 WITH crm_transformed_sale_details AS (
   SELECT
      sls_ord_num,
@@ -109,6 +113,7 @@ INSERT INTO silver.crm_sale_details (
 SELECT * FROM crm_transformed_sale_details;
 ------------------------------------------------------------
 
+DELETE FROM silver.erp_customers;
 WITH erp_transformed_customers AS (
 	SELECT
 		CASE
@@ -134,6 +139,7 @@ INSERT INTO silver.erp_customers (
 SELECT * FROM erp_transformed_customers;
 ------------------------------------------------------------
 
+DELETE FROM silver.erp_locations;
 WITH erp_transformed_locations AS (
 	SELECT
 		REPLACE(cid, '-', '') AS cid, 
@@ -152,6 +158,7 @@ INSERT INTO silver.erp_locations (
 SELECT * FROM erp_transformed_locations;
 ------------------------------------------------------------
 
+DELETE FROM silver.erp_product_categories;
 WITH erp_transformed_prod_categories AS (
   SELECT
       id,
