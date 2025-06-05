@@ -1,4 +1,4 @@
-CREATE TABLE silver.crm_customers (
+CREATE TABLE IF NOT EXISTS silver.crm_customers (
       cst_id              INT,
       cst_key             NVARCHAR(50),
       cst_firstname       NVARCHAR(50),
@@ -8,7 +8,7 @@ CREATE TABLE silver.crm_customers (
       cst_create_date     DATE
 );
 
-CREATE TABLE silver.crm_products (
+CREATE TABLE IF NOT EXISTS silver.crm_products (
       prd_id       INT,
       cat_id       NVARCHAR(50),
       prd_key      NVARCHAR(50),
@@ -19,7 +19,7 @@ CREATE TABLE silver.crm_products (
       prd_end_dt   DATETIME
 );
 
-CREATE TABLE silver.crm_sale_details (
+CREATE TABLE IF NOT EXISTS silver.crm_sale_details (
       sls_ord_num  NVARCHAR(50),
       sls_prd_key  NVARCHAR(50),
       sls_cust_id  INT,
@@ -31,18 +31,18 @@ CREATE TABLE silver.crm_sale_details (
       sls_price    INT
 );
 
-CREATE TABLE silver.erp_locations (
+CREATE TABLE IF NOT EXISTS silver.erp_locations (
       cid    NVARCHAR(50),
       cntry  NVARCHAR(50)
 );
 
-CREATE TABLE silver.erp_customers (
+CREATE TABLE IF NOT EXISTS silver.erp_customers (
       cid    NVARCHAR(50),
       bdate  DATE,
       gen    NVARCHAR(50)
 );
 
-CREATE TABLE silver.erp_product_categories (
+CREATE TABLE IF NOT EXISTS silver.erp_product_categories (
       id           NVARCHAR(50),
       cat          NVARCHAR(50),
       subcat       NVARCHAR(50),
