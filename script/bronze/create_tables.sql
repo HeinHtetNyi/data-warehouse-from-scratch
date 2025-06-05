@@ -1,4 +1,4 @@
-CREATE TABLE bronze.crm_customers (
+CREATE TABLE IF NOT EXISTS bronze.crm_customers (
       cst_id              INT,
       cst_key             NVARCHAR(50),
       cst_firstname       NVARCHAR(50),
@@ -8,7 +8,7 @@ CREATE TABLE bronze.crm_customers (
       cst_create_date     DATE
 );
 
-CREATE TABLE bronze.crm_products (
+CREATE TABLE IF NOT EXISTS  bronze.crm_products (
       prd_id       INT,
       prd_key      NVARCHAR(50),
       prd_nm       NVARCHAR(50),
@@ -18,7 +18,7 @@ CREATE TABLE bronze.crm_products (
       prd_end_dt   DATETIME
 );
 
-CREATE TABLE bronze.crm_sale_details (
+CREATE TABLE IF NOT EXISTS  bronze.crm_sale_details (
       sls_ord_num  NVARCHAR(50),
       sls_prd_key  NVARCHAR(50),
       sls_cust_id  INT,
@@ -30,18 +30,18 @@ CREATE TABLE bronze.crm_sale_details (
       sls_price    INT
 );
 
-CREATE TABLE bronze.erp_locations (
+CREATE TABLE IF NOT EXISTS bronze.erp_locations (
       cid    NVARCHAR(50),
       cntry  NVARCHAR(50)
 );
 
-CREATE TABLE bronze.erp_customers (
+CREATE TABLE IF NOT EXISTS bronze.erp_customers (
       cid    NVARCHAR(50),
       bdate  DATE,
       gen    NVARCHAR(50)
 );
 
-CREATE TABLE bronze.erp_product_categories (
+CREATE TABLE IF NOT EXISTS bronze.erp_product_categories (
       id           NVARCHAR(50),
       cat          NVARCHAR(50),
       subcat       NVARCHAR(50),
