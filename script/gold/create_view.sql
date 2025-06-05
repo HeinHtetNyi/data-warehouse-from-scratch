@@ -1,4 +1,4 @@
-CREATE VIEW IF NOT EXISTS  gold.dim_customers AS
+CREATE VIEW gold.dim_customers AS
   SELECT
         ROW_NUMBER() OVER (ORDER BY cst_id) AS customer_key, 
         ci.cst_id                          AS customer_id,
@@ -20,7 +20,7 @@ CREATE VIEW IF NOT EXISTS  gold.dim_customers AS
       ON ci.cst_key = la.cid;
 
 
-CREATE VIEW IF NOT EXISTS gold.dim_products AS
+CREATE VIEW gold.dim_products AS
   SELECT
       ROW_NUMBER() OVER (ORDER BY pn.prd_start_dt, pn.prd_key) AS product_key, 
       pn.prd_id       AS product_id,
@@ -39,7 +39,7 @@ CREATE VIEW IF NOT EXISTS gold.dim_products AS
   WHERE pn.prd_end_dt IS NULL;
 
 
-CREATE VIEW IF NOT EXISTS gold.dim_products AS
+CREATE VIEW gold.dim_products AS
   SELECT
       ROW_NUMBER() OVER (ORDER BY pn.prd_start_dt, pn.prd_key) AS product_key, 
       pn.prd_id       AS product_id,
@@ -58,7 +58,7 @@ CREATE VIEW IF NOT EXISTS gold.dim_products AS
   WHERE pn.prd_end_dt IS NULL;
 
 
-CREATE VIEW IF NOT EXISTS gold.fact_sales AS
+CREATE VIEW gold.fact_sales AS
   SELECT
       sd.sls_ord_num  AS order_number,
       pr.product_key  AS product_key,
