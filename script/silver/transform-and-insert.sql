@@ -151,3 +151,19 @@ INSERT INTO silver.erp_locations (
 )
 SELECT * FROM erp_transformed_locations;
 ------------------------------------------------------------
+
+WITH erp_transformed_prod_categories AS (
+  SELECT
+      id,
+      cat,
+      subcat,
+      maintenance
+  FROM bronze.erp_product_categories
+)
+INSERT INTO silver.erp_product_categories (
+	id,
+	cat,
+	subcat,
+	maintenance
+)
+SELECT * FROM erp_transformed_prod_categories;
